@@ -1,6 +1,8 @@
 // import { reactive, readonly, toRefs, computed, onMounted, onUpdated } from 'vue';
 const { reactive, readonly, toRefs, computed, onMounted, onUpdated } = Vue;
 
+const DEVELOPING = location.origin!="https://tridict.github.io";
+
 const API_URL = "https://sp22.nlpsun.cn/api/seg";
 // const API_URL = "http://127.0.0.1:8888//api/seg";
 
@@ -383,7 +385,8 @@ const MainApp = {
 
 
     onMounted(async () => {
-      const resp = await axios.get(`${location.protocol}//${location.host}/db/HSK2021-ranks-csv.json`);
+      const url_base = DEVELOPING ? `${location.origin}` : `${location.href}`;
+      const resp = await axios.get(`${url_base}/db/HSK2021-ranks-csv.json`);
       const items = resp.data;
       data.hsk_db = _.groupBy(items, "word");
       console.log(data.hsk_db);
